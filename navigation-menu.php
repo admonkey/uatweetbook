@@ -1,3 +1,2 @@
-<li><a href="<?php echo $relative_webpath;?>Forms/">Forms</a></li>
-<li><a href="<?php echo $relative_webpath;?>Tables/">Tables</a></li> 
-<li><a href="<?php echo $relative_webpath;?>SubSection/">Sub Section</a></li> 
+<li><a href="<?php echo $relative_webpath;?>Products/">Products</a></li>
+<li><a href="<?php echo $relative_webpath;?>About/">About Us</a></li>

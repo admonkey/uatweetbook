@@ -1,5 +1,5 @@
 <?php
-	$pageTitle = "Home Page";
+	//$pageTitle = "Home Page";
 	require_once('resources/header.php');
 ?>
 

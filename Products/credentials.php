@@ -1,6 +1,6 @@
 <?php
-	$site_title = "Platypus Products, Inc.";
-
+	$section_title = "Products";
+	
 	/*
 	// declare database variables
 	$db_server = "sql.example.com";
