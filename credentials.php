@@ -16,4 +16,4 @@
 	$selected = mysql_select_db($db_database,$db_handle)
 	  or die("Could not select database");
 	*/
-?>
+?><?php $site_title = 'platypus.example.com'; ?>
