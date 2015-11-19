@@ -7,7 +7,7 @@
 
 <div class="well">
 
-	<form id="form1" role="form">
+	<form id="contact_form" role="form">
 	
 		  <div class="form-group">
 			<label for="first_name">First Name:</label>
