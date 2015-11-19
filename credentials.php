@@ -1,12 +1,11 @@
 <?php
 	$site_title = "Platypus Products, Inc.";
 
-	/*
 	// declare database variables
-	$db_server = "sql.example.com";
-	$db_user = "username";
-	$db_pass = "p@55W0rd";
-	$db_database = "database";
+	$db_server = "localhost";
+	$db_user = "uoasa05";
+	$db_pass = "userpass";
+	$db_database = "uoasa05";
 	
 	// connection to MySQL database
 	$db_handle = mysql_connect($db_server, $db_user, $db_pass)
@@ -15,5 +14,4 @@
 	// select a database to work with
 	$selected = mysql_select_db($db_database,$db_handle)
 	  or die("Could not select database");
-	*/
 ?>
