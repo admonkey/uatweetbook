@@ -8,7 +8,7 @@ echo "
 ";
 
 if(isset($_POST[contact_form]))
-	echo "Thank you for your interest!";
+	include("contact.submit.php");
 else
 	include("contact.form.html");
 
