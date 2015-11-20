@@ -12,16 +12,25 @@ $sql = "
   FROM Products
   WHERE product_id = $product_id;
 ";
-
 $result = mysql_query($sql) or die(mysql_error());
-
 $row = mysql_fetch_assoc($result);  
+
+$sql = "
+  SELECT photo_filename
+  FROM Product_Photos
+  WHERE product_id = $product_id
+  LIMIT 1;
+";
+$result = mysql_query($sql) or die(mysql_error());
+$photo = mysql_result($result,0); 
 
 echo "
 
   <h1>$row[product_name]</h1>
   
   <div class='well'>
+  
+    <img alt='picture of a platypus' src='images/$photo' class='img-responsive'></img>
   
     <p>$row[product_desc]</p>
 ";
