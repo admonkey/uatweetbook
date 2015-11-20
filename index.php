@@ -36,9 +36,15 @@ echo "
   
   <div class='col-md-6'>
 
-    <p>Learn more <a href='About/'>about <?=$site_title?></a></p>
+    <div class='well'>
+    
+    <img alt='picture of a platypus' src='resources/img/Platypus-3.png' class='img-responsive'></img>
+  
+      <p>Learn more <a href='About/'>about <?=$site_title?></a></p>
 
-    <p><small>Can't find what you're looking for? <a href='About/contact.php'>Contact Us</a>.</small></p>
+      <p><small>Can't find what you're looking for? <a href='About/contact.php'>Contact Us</a>.</small></p>
+      
+    </div><!-- /.well -->
 
   </div><!-- /.col-md-6 -->
 
@@ -48,8 +54,10 @@ echo "
 
   <div class='col-md-6'>
 
+    <div class='well'>
       <p class='lead'>Please check out all of our <a href='Products/'>products</a>!</p>
-
+    </div><!-- /.well -->
+    
   </div><!-- /.col-md-6 -->
 
 

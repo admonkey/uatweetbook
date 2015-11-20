@@ -3,10 +3,14 @@ html {
 }
 body {
 	background-color: black;
-	background: url(../img/bg.jpg) no-repeat center center fixed;
+	background: url(../img/bg.png) no-repeat center center fixed;
 	background-size: cover;
 	/* BOOTSTRAP FIX: PADDING FOR STATIC-FIXED TOP NAV */
 	padding-top: 65px;
+}
+h1 {
+    color: black;
+    text-shadow: -3px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 /* Enhance Logo */
 .navbar-brand {
