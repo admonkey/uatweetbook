@@ -10,6 +10,7 @@ echo "
   <h1>Welcome to $site_title</h1>
   <div class='well'>
     <p>Here is a small change to test merging.</p>
+    <p>Here's another change for further testing.</p>
   </div><!-- /.well -->
 ";
 
