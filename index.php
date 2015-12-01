@@ -8,6 +8,9 @@ require_once('_resources/header.php');
 
 echo "
   <h1>Welcome to $site_title</h1>
+  <div class='well'>
+    <p>Here is a small change to test merging.</p>
+  </div><!-- /.well -->
 ";
 
 require_once('_resources/footer.php');
