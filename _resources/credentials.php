@@ -52,4 +52,4 @@ if (file_exists('_resources/credentials.php')) include_once('_resources/credenti
 // section overrides
 if (file_exists('_resources/credentials_local.php')) include_once('_resources/credentials_local.php');
 
-?>
+?><?php $site_title = 'uatweetbook.com'; ?>
