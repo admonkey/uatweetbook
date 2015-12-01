@@ -32,7 +32,7 @@
 	The credentials_local.php files are useful for automatic merging patch updates.
 */
 
-$site_title = "Web Site";
+$site_title = "uatweetbook.com";
 
 // database
   // remote
@@ -52,4 +52,4 @@ if (file_exists('_resources/credentials.php')) include_once('_resources/credenti
 // section overrides
 if (file_exists('_resources/credentials_local.php')) include_once('_resources/credentials_local.php');
 
-?><?php $site_title = 'uatweetbook.com'; ?>
+?>
