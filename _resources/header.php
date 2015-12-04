@@ -1,12 +1,17 @@
 <?php
 
-if (isset($require_ssl) && $require_ssl) {
+if ( !empty($require_ssl) ) {
 	if(!isset($_SERVER['HTTPS'])) header('location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']); 
 }
 
-//if (session_status() == PHP_SESSION_NONE) {
+/*
+removed for backwards compatibility with php <=5.4.0
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
-//}
+}
+*/
+if (!isset($_SESSION)) { session_start(); }
+
 if (isset($_GET["logout"])){
   session_destroy();
   session_start();
@@ -45,7 +50,7 @@ include_once((__DIR__) . '/credentials.php');
 
 
 // MySQL
-if ( isset($include_mysql) && $include_mysql ) {
+if ( !empty($include_mysql) ) {
   // connection
   /*
 	using deprecated mysql_connect()
@@ -106,7 +111,7 @@ if (!(strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false)) { ?>
   ";?>
 
   <?php
-    if ( isset($include_jquery_ui) && $include_jquery_ui ) {
+    if ( !empty($include_jquery_ui) ) {
       echo "
 	<!-- JQUERY-UI -->
 	<script src='$path_web_relative_root/_resources/jquery-ui/jquery-ui.1.11.4.min.js'></script>
@@ -128,7 +133,7 @@ if (!(strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false)) { ?>
   ?>
 
   <?php
-    if ( isset($include_tablesorter) && $include_tablesorter ) {
+    if ( !empty($include_tablesorter) ) {
       echo "
 	<!-- TABLESORTER -->
 	<script src='$path_web_relative_root/_resources/tablesorter/tablesorter.2.0.5b.min.js'></script>
@@ -143,7 +148,7 @@ if (!(strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false)) { ?>
   ?>
 
   <?php
-    if ( isset($include_chartist) && $include_chartist ) {
+    if ( !empty($include_chartist) ) {
       echo "
 	<!-- CHARTIST -->
 	<script src='$path_web_relative_root/_resources/chartist/chartist.0.9.4.min.js'></script>
@@ -154,7 +159,7 @@ if (!(strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false)) { ?>
   ?>
 
   <?php
-    if ( isset($include_fancybox) && $include_fancybox ) {
+    if ( !empty($include_fancybox) ) {
       echo "
 	<!-- Add fancyBox -->
 	<link rel='stylesheet' href='$path_web_relative_root/_resources/fancybox/fancybox.css' type='text/css' media='screen' />
