@@ -11,6 +11,7 @@ echo "
   <div class='well'>
     <p>Here is a small change to test merging.</p>
     <p>Here's another change for further testing.</p>
+	<p>Here's another test from Ryan.</p>
   </div><!-- /.well -->
 ";
 

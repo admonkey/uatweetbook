@@ -1,13 +1,21 @@
 <?php
 
-if ($require_ssl) {
+if ( !empty($require_ssl) ) {
 	if(!isset($_SERVER['HTTPS'])) header('location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']); 
 }
 
-session_start();
-if (isset($_GET["logout"]))
+/*
+removed for backwards compatibility with php <=5.4.0
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+*/
+if (!isset($_SESSION)) { session_start(); }
+
+if (isset($_GET["logout"])){
   session_destroy();
-session_start();
+  session_start();
+}
 
 // FIX: bug when part of relative path duplicated in alias
 $debug = false;
@@ -34,15 +42,22 @@ if( count($array_differences) > 0 )
 // else if nodes down from server root
 else
   $path_web_relative_root = str_replace($_SERVER['DOCUMENT_ROOT'], '', $path_real_relative_root);
+if ($debug) echo '$_SERVER[DOCUMENT_ROOT] = ' . $_SERVER['DOCUMENT_ROOT'] . '<br/>';
+if ($debug) echo '$path_web_relative_root = ' . $path_web_relative_root . '<br/>';
 
 // variable definitions
 include_once((__DIR__) . '/credentials.php');
 
 
 // MySQL
-if ($include_mysql) {
+if ( !empty($include_mysql) ) {
   // connection
-  $mysql_connected = mysql_connect($database_server, $database_username, $database_password);
+  /*
+	using deprecated mysql_connect()
+	will need to upgrade to mysqli ASAP
+	until then, silence server error notice
+  */
+  $mysql_connected = @mysql_connect($database_server, $database_username, $database_password);
 
   // use database
   $mysql_selected = mysql_select_db($database_name,$mysql_connected);
@@ -51,7 +66,10 @@ if ($include_mysql) {
     $mysql_connection = true;
 }
 
-?>
+
+// if filename contains ajax, then don't print html header
+if (!(strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false)) { ?>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -93,7 +111,7 @@ if ($include_mysql) {
   ";?>
 
   <?php
-    if ( $include_jquery_ui ) {
+    if ( !empty($include_jquery_ui) ) {
       echo "
 	<!-- JQUERY-UI -->
 	<script src='$path_web_relative_root/_resources/jquery-ui/jquery-ui.1.11.4.min.js'></script>
@@ -101,27 +119,58 @@ if ($include_mysql) {
 	<!-- official content delivery network -->
 	<!-- <script src='//code.jquery.com/ui/1.11.4/jquery-ui.min.js'></script> -->
 	<!-- <link rel='stylesheet' href='//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css'> -->
+
+	<!-- auto-expand textarea to fit content -->
+	<script>
+		$(function(){ $('textarea').keyup(function(e) {
+			while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css('borderTopWidth')) + parseFloat($(this).css('borderBottomWidth'))) {
+				$(this).height($(this).height()+1);
+			};
+		})});
+	</script>
       ";
     }
   ?>
 
   <?php
-    if ( $include_tablesorter ) {
+    if ( !empty($include_tablesorter) ) {
       echo "
 	<!-- TABLESORTER -->
 	<script src='$path_web_relative_root/_resources/tablesorter/tablesorter.2.0.5b.min.js'></script>
 	<link rel='stylesheet' href='$path_web_relative_root/_resources/tablesorter/tablesorter.css'>
+	<script>
+	  $(function() {
+		  $('table').addClass('table table-hover table-striped table-bordered table-condensed tablesorter').tablesorter();
+	  });
+	</script>
       ";
     }
   ?>
 
   <?php
-    if ( $include_chartist ) {
+    if ( !empty($include_chartist) ) {
       echo "
 	<!-- CHARTIST -->
 	<script src='$path_web_relative_root/_resources/chartist/chartist.0.9.4.min.js'></script>
 	<link rel='stylesheet' href='$path_web_relative_root/_resources/chartist/chartist.min.css'></link>
 	<link rel='stylesheet' href='$path_web_relative_root/_resources/chartist/chartist.custom.css'></link>
+      ";
+    }
+  ?>
+
+  <?php
+    if ( !empty($include_fancybox) ) {
+      echo "
+	<!-- Add fancyBox -->
+	<link rel='stylesheet' href='$path_web_relative_root/_resources/fancybox/fancybox.css' type='text/css' media='screen' />
+	<script type='text/javascript' src='$path_web_relative_root/_resources/fancybox/fancybox.pack.js'></script>
+	<!-- Optionally add helpers - button, thumbnail and/or media -->
+	<link rel='stylesheet' href='$path_web_relative_root/_resources/fancybox/fancybox-buttons.css' type='text/css' media='screen' />
+	<script type='text/javascript' src='$path_web_relative_root/_resources/fancybox/fancybox-buttons.js'></script>
+	<script type='text/javascript' src='$path_web_relative_root/_resources/fancybox/fancybox-media.js'></script>
+
+	<link rel='stylesheet' href='$path_web_relative_root/_resources/fancybox/fancybox-thumbs.css' type='text/css' media='screen' />
+	<script type='text/javascript' src='$path_web_relative_root/_resources/fancybox/fancybox-thumbs.js'></script>
       ";
     }
   ?>
@@ -167,17 +216,15 @@ if ($include_mysql) {
 		  // use local navigation menu if exists
 		  if (file_exists('_resources/navigation-menu.php'))
 		    include('_resources/navigation-menu.php');
-		  /*
-		  // , else use global.
+		  // else use global.
 		  else
 		    include($path_real_relative_root . '/_resources/navigation-menu.php');
-		  */
 
 		?>
 
 	    </ul>
 	    
-	    <div class="pull-right">
+	    <div id='login_nav_div' class="pull-right">
 		<ul class="nav navbar-nav">
 		  <?php
 		    if (isset($_SESSION['username'])) { ?>
@@ -225,3 +272,6 @@ if ($include_mysql) {
 		<div id="page-content-container" class='container<?php if(!isset($no_well_container)) echo " well' style='background-color:white;"; ?>'>
 		  
 <!-- BEGIN BODY CONTENT -->
+<?php
+}
+?>

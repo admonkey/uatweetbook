@@ -1,8 +1,8 @@
--- CREATE DATABASE example_database;
+-- CREATE DATABASE uatweetbook;
 
--- CREATE USER 'username'@'localhost' IDENTIFIED BY 'p@55W0rd';
+-- CREATE USER 'uatb'@'localhost' IDENTIFIED BY 'J1bKm0MYgrZVQMxy';
 
--- GRANT ALL PRIVILEGES ON example_database.* TO 'username'@'localhost';
+-- GRANT ALL PRIVILEGES ON uatweetbook.* TO 'uatb'@'localhost';
 
 DROP TABLE IF EXISTS Objects;
 CREATE TABLE Objects (

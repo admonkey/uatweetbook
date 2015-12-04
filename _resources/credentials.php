@@ -32,17 +32,17 @@
 	The credentials_local.php files are useful for automatic merging patch updates.
 */
 
-$site_title = "Web Site";
+$site_title = "uatweetbook.com";
 
 // database
   // remote
-  $database_server = "sql.example.com";
+  //$database_server = "sql.example.com";
   // local
   $database_server = "localhost";
 
-  $database_username = "username";
-  $database_password = "p@55W0rd";
-  $database_name = "example_database";
+  $database_username = "uatb";
+  $database_password = "J1bKm0MYgrZVQMxy";
+  $database_name = "uatweetbook";
 
   
 // global overrides
