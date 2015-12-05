@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mysql --host=localhost --user=username --password=p@55W0rd --database=example_database < $( dirname "${BASH_SOURCE[0]}" )/forum.ddl.sql
+mysql --host=localhost --user=uatb --password=J1bKm0MYgrZVQMxy --database=uatweetbook < $( dirname "${BASH_SOURCE[0]}" )/forum.ddl.sql
