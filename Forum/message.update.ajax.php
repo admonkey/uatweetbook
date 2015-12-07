@@ -1,11 +1,18 @@
 <div>
 <?php
 
-if ( !empty($_GET["message_id"]) && is_numeric($_GET["message_id"]) ){
-  $message_id = $_GET["message_id"];
+if ( !empty($_POST["message_id"]) && is_numeric($_POST["message_id"]) ){
+  $message_id = $_POST["message_id"];
 } else {
   echo "<p class='bg-danger text-danger'>ERROR: Invalid Message ID</p>";
   die();
+}
+
+if (empty($_POST["message_text"])){
+  echo "<p class='bg-danger text-danger'>ERROR: No Message Text</p>";
+  die();
+} else {
+  $message_text = $_POST["message_text"];
 }
 
 session_start();
@@ -16,28 +23,18 @@ if (empty($_SESSION["user_id"])){
   $user_id = $_SESSION["user_id"];
 }
 
-if (isset($_GET["restore"])) $deleted = 0;
-else $deleted = 1;
-
 include_once('../_resources/credentials.php');
 $include_mysql = true;
 require_once('../_resources/header.php');
 
-?>
-
-<?php
-
 if( !empty($mysql_connection) ){
 
-    $sql="CALL Forum_proc_Delete_Message($user_id, $message_id, $deleted)";
+	$message_text = prepare_sql_input($message_text);
+
+    $sql="CALL Forum_proc_Update_Message($user_id, $message_id, '$message_text')";
     $result = mysql_query($sql) or die(mysql_error());
 
-    if ($deleted == 1)
-      echo "
-      <div>
-	<p class='text-danger'>Message Deleted</p>
-	<p><a href='javascript:void(0)' onclick='delete_message($message_id + \"&restore\", $(this), true)'><label class='label label-warning'>Undo</label></a></p>
-      </div>";
+    include("message.read.inc.php");
 
 } else {
 
