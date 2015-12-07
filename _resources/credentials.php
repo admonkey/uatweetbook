@@ -32,7 +32,7 @@
 	The credentials_local.php files are useful for automatic merging patch updates.
 */
 
-$site_title = "uatweetbook.com";
+$site_title = "UA tweetbook";
 
 // database
   // remote
