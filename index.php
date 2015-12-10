@@ -11,11 +11,10 @@ echo "<h1>Welcome to $site_title</h1>";
 ?>
   
 <div class='well'>
- <p>This is a class project for ISYS 5453 - INTRO ENTERPRISE SERVERS with Andrew Mackey 
+ <p>This is an <a href='http://information-systems.uark.edu/' target='_blank'>Information Systems</a> class <a href='instructions.pdf' target='_blank'>project</a> for ISYS 5453 - Introduction to Enterprise Servers with <a href='http://walton.uark.edu/directory/?id=almackey' target='_blank'>Andrew Mackey</a> 
    in the <a href='http://walton.uark.edu/' target='_blank'>Sam M. Walton College of Business</a>
-   at the <a href='http://uark.edu/' target='_blank'>University of Arkansas</a> in Fayetteville, Arkansas.</p>
- <p>Team Members are Jeff Puckett & Ryan Gordy.</p>
- <p>The project instructions can be found <a href='instructions.pdf' target='_blank'>here</a>.</p>
+   at the <a href='http://uark.edu/' target='_blank'>University of Arkansas</a> in <a href='http://www.fayetteville-ar.gov/' target='_blank'>Fayetteville, Arkansas</a>.</p>
+ <p>Team Members are <a href='http://walton.uark.edu/directory/?id=jpucket' target='_blank'>Jeff Puckett</a> & <a href='http://directory.uark.edu/people/rgordy' target='_blank'>Ryan Gordy</a>.</p>
  <p>The source code for this project can be found on <a href='https://github.com/admonkey/uatweetbook/' target='_blank'>Github</a>,
    which includes the project <a href='https://github.com/admonkey/uatweetbook/wiki' target='_blank'>wiki</a>.</p>
 </div><!-- /.well -->
