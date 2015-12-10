@@ -198,7 +198,10 @@ if $createSSL ; then
         if ! [ -d $sslDirectory ]; then
 	  mkdir $sslDirectory
 	fi
+	# self-signed certificate
 	openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -keyout $sslDirectory/$siteName.key -out $sslDirectory/$siteName.crt -subj "/CN=$siteName/emailAddress=webmaster@$siteName"
+	# certificate signing request
+	# openssl req -new -nodes -sha256 -newkey rsa:2048 -keyout $sslDirectory/$siteName.key -out $sslDirectory/$siteName.csr
 
 	# APPEND VIRTUAL HOST CONFIGURATION FILE
 	if $createVhost ; then
@@ -221,7 +224,7 @@ fi
 # ENABLE NEW VIRTUAL HOST
 if $createVhost ; then
 	sudo mv VirtualHostConfigurationFile $vhostConf
-	sudo a2ensite $siteName && sudo service apache2 restart
+	sudo a2enmod rewrite && sudo a2ensite $siteName && sudo service apache2 restart
 fi
 echo "deny from all" > .git/.htaccess
 
