@@ -4,23 +4,26 @@
 
 -- GRANT ALL PRIVILEGES ON example_database.* TO 'username'@'localhost';
 
-DROP TABLE IF EXISTS Objects;
-CREATE TABLE Objects (
-  object_creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  object_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  object_title VARCHAR(50) NOT NULL,
-  object_description VARCHAR(1000)
+DROP TABLE IF EXISTS Members;
+CREATE TABLE Members (
+  creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  user_name VARCHAR(50) NOT NULL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email_address VARCHAR(50) NOT NULL,
+  password CHAR(128) NOT NULL,
+  salt CHAR(128) NOT NULL 
 );
 
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('first object', 'This would be the description for the first object.');
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('second object', 'Description for the second object.');
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('third object', 'After the title, then would be the description for the third object.');
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('fourth object', 'More information can be found here about the fourth object.');
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('fifth object', 'Further reading for the fifth object.');
-INSERT INTO Objects (object_title, object_description)
-  VALUES ('sixth object', 'This would be the description for the sixth object.');
+DROP TABLE IF EXISTS Groups;
+CREATE TABLE Groups (
+  user_name VARCHAR(50) NOT NULL PRIMARY KEY,
+  group_type VARCHAR(10) NOT NULL,
+  FOREIGN KEY (user_name) REFERENCES Members(user_name)
+);
+
+DROP TABLE IF EXISTS Login_Attempts;
+CREATE TABLE Login_Attempts (
+    user_id INT(11) NOT NULL,
+    time VARCHAR(30) NOT NULL
+);
