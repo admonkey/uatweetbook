@@ -15,17 +15,17 @@ if (empty($_POST["message_text"])){
   $message_text = $_POST["message_text"];
 }
 
-session_start();
+include_once('_resources/credentials.php');
+$include_mysql = true;
+require_once('_resources/header.php');
+
+sec_session_start();
 if (empty($_SESSION["user_id"])){
   echo "<p class='bg-danger text-danger'>ERROR: Not Logged In</p>";
   die();
 } else {
   $user_id = $_SESSION["user_id"];
 }
-
-include_once('../_resources/credentials.php');
-$include_mysql = true;
-require_once('../_resources/header.php');
 
 if( !empty($mysql_connection) ){
 
@@ -46,5 +46,5 @@ if( !empty($mysql_connection) ){
 
 ?>
 
-<?php require_once('../_resources/footer.php');?>
+<?php require_once('_resources/footer.php');?>
 </div>

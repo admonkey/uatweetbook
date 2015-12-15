@@ -1,8 +1,8 @@
 <?php
 
-include_once('../_resources/credentials.php');
+include_once('_resources/credentials.php');
 $page_title = "Rules";
-require_once('../_resources/header.php');
+require_once('_resources/header.php');
 
 echo "<h1>$page_title</h1>";
 
@@ -24,6 +24,6 @@ echo "<h1>$page_title</h1>";
 	<p>Users will be <b><u>banned</u></b> for posting <code>&lt;script&gt;</code> tags.</p>
 </div>
 
-<?php echo "<a href='$path_web_relative_root/Forum/' class='btn btn-default'>Go to the Forum</a>"; ?>
+<?php echo "<a href='./' class='btn btn-default'>Go to the Forum</a>"; ?>
 
-<?php require_once('../_resources/footer.php');?>
+<?php require_once('_resources/footer.php');?>
