@@ -32,24 +32,23 @@
 	The credentials_local.php files are useful for automatic merging patch updates.
 */
 
-$site_title = "Web Site";
+$site_title = "UA tweetbook";
 
 // database
   // remote
-  $database_server = "sql.example.com";
+  //$database_server = "sql.example.com";
   // local
   $database_server = "localhost";
 
-  $database_username = "username";
-  $database_password = "p@55W0rd";
-  $database_name = "example_database";
+  $database_username = "uatb";
+  $database_password = "J1bKm0MYgrZVQMxy";
+  $database_name = "uatweetbook";
 
   
 // global overrides
-if (file_exists((__DIR__) . '/credentials_local.php')) include_once((__DIR__) . '/credentials_local.php');
+$global_credentials_local = (__DIR__) . "/credentials_local.php";
+if (file_exists($global_credentials_local)) require_once($global_credentials_local);
 // section definitions
-if (file_exists('_resources/credentials.php')) include_once('_resources/credentials.php');
-// section overrides
-if (file_exists('_resources/credentials_local.php')) include_once('_resources/credentials_local.php');
+require_once('_resources/credentials.php');
 
 ?>
