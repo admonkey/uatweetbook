@@ -46,10 +46,9 @@ $site_title = "UA tweetbook";
 
   
 // global overrides
-if (file_exists((__DIR__) . '/credentials_local.php')) include_once((__DIR__) . '/credentials_local.php');
+$global_credentials_local = (__DIR__) . "/credentials_local.php";
+if (file_exists($global_credentials_local)) require_once($global_credentials_local);
 // section definitions
-if (file_exists('_resources/credentials.php')) include_once('_resources/credentials.php');
-// section overrides
-if (file_exists('_resources/credentials_local.php')) include_once('_resources/credentials_local.php');
+require_once('_resources/credentials.php');
 
 ?>

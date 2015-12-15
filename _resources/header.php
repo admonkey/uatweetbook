@@ -4,29 +4,14 @@ if ( !empty($require_ssl) ) {
 	if(!isset($_SERVER['HTTPS'])) header('location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']); 
 }
 
-/*
-removed for backwards compatibility with php <=5.4.0
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-*/
-if (!isset($_SESSION)) { session_start(); }
-
-if (isset($_GET["logout"])){
-  session_destroy();
-  session_start();
-}
+sec_session_start();
 
 // FIX: bug when part of relative path duplicated in alias
 $debug = false;
 
-// get relative path definitions
-$path_real_relative_root = (__DIR__);
-if ($debug) echo '$path_real_relative_root = ' . $path_real_relative_root . '<br/>';
-
-// move up from included header
-$path_real_relative_root = str_replace('/_resources', '', $path_real_relative_root);
-if ($debug) echo '$path_real_relative_root = ' . $path_real_relative_root . '<br/>';
+// get relative path definition from included header
+$path_real_root = dirname(__DIR__);
+if ($debug) echo '$path_real_root = ' . $path_real_root . '<br/>';
 
 // get differences in case of Alias
 if ($debug) echo '$_SERVER[SCRIPT_NAME] = ' . $_SERVER['SCRIPT_NAME'] . '<br/>';
@@ -38,12 +23,12 @@ $array_differences = array_diff($first_array, $second_array);
 // if alias
 if ($debug) echo "count differences = " . count($array_differences) . '<br/>';
 if( count($array_differences) > 0 )
-  $path_web_relative_root = "/" . implode('/',$array_differences);
+  $path_web_root = "/" . implode('/',$array_differences);
 // else if nodes down from server root
 else
-  $path_web_relative_root = str_replace($_SERVER['DOCUMENT_ROOT'], '', $path_real_relative_root);
+  $path_web_root = str_replace($_SERVER['DOCUMENT_ROOT'], '', $path_real_root);
 if ($debug) echo '$_SERVER[DOCUMENT_ROOT] = ' . $_SERVER['DOCUMENT_ROOT'] . '<br/>';
-if ($debug) echo '$path_web_relative_root = ' . $path_web_relative_root . '<br/>';
+if ($debug) echo '$path_web_root = ' . $path_web_root . '<br/>';
 
 // variable definitions
 include_once((__DIR__) . '/credentials.php');
@@ -71,6 +56,60 @@ function prepare_sql_input($text){
 
 }
 
+function sec_session_start() {
+    $session_name = 'sec_session_id';   // Set a custom session name 
+
+    if(empty($require_ssl))
+      $secure = false;
+    else
+      $secure = true;
+
+    // This stops JavaScript being able to access the session id.
+    $httponly = true;
+
+    // Forces sessions to only use cookies.
+    if (ini_set('session.use_only_cookies', 1) === FALSE) {
+        //header("Location: error.php?err=Could not initiate a safe session (ini_set)");
+        //exit();
+        die("ERROR: Could not initiate a safe session (ini_set)");
+    }
+
+    // Gets current cookies params.
+    $cookieParams = session_get_cookie_params();
+    session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
+
+    // Sets the session name to the one set above.
+    //session_name($session_name);
+    
+    /*
+    removed for backwards compatibility with php <=5.4.0
+    if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+    }
+    */
+    if (!isset($_SESSION)) {
+      session_start();            // Start the PHP session 
+      session_regenerate_id();    // regenerated the session, delete the old one. 
+    }
+
+    if (isset($_GET["logout"])){
+      // Unset all session values 
+      $_SESSION = array();
+
+      // get session parameters 
+      $params = session_get_cookie_params();
+
+      // Delete the actual cookie. 
+      setcookie(session_name(),'', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+
+      // Destroy session 
+      session_destroy();
+      unset($_GET["logout"]);
+      header("Location: $_SERVER[SCRIPT_NAME]");
+    }
+
+}
+
 
 // MySQL
 if ( !empty($include_mysql) ) {
@@ -90,8 +129,10 @@ if ( !empty($include_mysql) ) {
 }
 
 
-// if filename contains ajax or bounce, then don't print html header
-if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpos(basename($_SERVER["SCRIPT_NAME"]),'.bounce.') !== false)) ) { ?>
+// if filename contains ".ajax." or ".bounce.", 
+//   or $exclude_html = true; 
+// then don't print html header
+if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpos(basename($_SERVER["SCRIPT_NAME"]),'.bounce.') !== false) || ( !empty($exclude_html) )) ) { ?>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -115,16 +156,16 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
   <?php echo "
   
     <!-- favicon -->
-    <link rel='icon' href='$path_web_relative_root/_resources/images/favicon.ico'></link>
+    <link rel='icon' href='$path_web_root/_resources/images/favicon.ico'></link>
   
     <!-- JQUERY -->
-    <script src='$path_web_relative_root/_resources/jquery/jquery.1.11.2.min.js'></script>
+    <script src='$path_web_root/_resources/jquery/jquery.1.11.2.min.js'></script>
 
     <!-- BOOTSTRAP -->
-    <script src='$path_web_relative_root/_resources/bootstrap/bootstrap.3.3.4.min.js'></script>
-    <link rel='stylesheet' href='$path_web_relative_root/_resources/bootstrap/bootstrap.3.3.4.min.css'></link>
-    <link rel='stylesheet' href='$path_web_relative_root/_resources/bootstrap/bootstrap.custom.css'></link>
-    <link rel='stylesheet' href='$path_web_relative_root/_resources/bootstrap/sidenav.css'></link>
+    <script src='$path_web_root/_resources/bootstrap/bootstrap.3.3.4.min.js'></script>
+    <link rel='stylesheet' href='$path_web_root/_resources/bootstrap/bootstrap.3.3.4.min.css'></link>
+    <link rel='stylesheet' href='$path_web_root/_resources/bootstrap/bootstrap.custom.css'></link>
+    <link rel='stylesheet' href='$path_web_root/_resources/bootstrap/sidenav.css'></link>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js'></script>
@@ -152,11 +193,11 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	  <!-- Side Nav Toggle -->
           <a id="sidenav-toggle" href="javascript:void(0);" onclick="$('#wrapper').toggleClass('toggled')">
-	    <img src="<?php echo $path_web_relative_root;?>/_resources/images/favicon.ico"></img>
+	    <img src="<?php echo $path_web_root;?>/_resources/images/favicon.ico"></img>
           </a>
 
           <?php // #site_title_brand
-	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_relative_root/'>$site_title</a>"; 
+	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_root/'>$site_title</a>"; 
           ?>
 
           <?php // #section_title_brand
@@ -171,25 +212,32 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 		<?php
 
-		  // use local navigation menu if exists
-		  if (file_exists('_resources/navigation-menu.php'))
-		    include('_resources/navigation-menu.php');
-		  // else use global.
-		  else
-		    include($path_real_relative_root . '/_resources/navigation-menu.php');
+		// recurse bottom-up the chain until first node with navigation menu
+		$path_relative_section = str_replace($path_web_root, '', dirname($_SERVER["SCRIPT_NAME"]));
+		// TODO: create rendered relative path for menu links that can be copied from html source
+		// will need "../" substitutions for parent node menus
+
+		do {
+		  if(file_exists("$path_real_root$path_relative_section/_resources/navigation-menu.php")){
+		    $path_rendered_relative = $path_web_root . $path_relative_section;
+		    include("$path_real_root$path_relative_section/_resources/navigation-menu.php");
+		    break;
+		  }
+		  $path_relative_section = dirname($path_relative_section);
+		  if($path_relative_section == "/") $path_relative_section = "";
+		} while (true);
 
 		?>
 
 	    </ul>
 	    
-	    <div id='login_nav_div' class="pull-right">
-		<ul class="nav navbar-nav">
+	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
+		<ul class="nav navbar-nav navigation-menu">
 		  <?php
-		    if (isset($_SESSION['username'])) { ?>
-		      <li id="logout"><a href="?logout">logout <?php echo $_SESSION['username']; ?></a></li>
-		    <?php } else { ?>
-		      <li id="login"><a href="<?php echo "$path_web_relative_root/LDAP/login.php"; ?>">login</a></li>
-		    <?php }
+		    if (isset($_SESSION["username"]))
+		      echo "<li id='logout'><a href='?logout'>Logout $_SESSION[username]</a></li>";
+		    else
+		      echo "<li id='login'><a href='$path_web_root/Login/'>Login</a></li>";
 		  ?>
 	      
 		</ul>
@@ -209,14 +257,14 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
             <ul class="sidebar-nav navigation-menu">
                 <!-- removed redundant sidebar brand
 		  <li class="sidebar-brand">
-		      <a href="<?php echo $path_web_relative_root;?>/"><?php echo $site_title; ?></a>
+		      <a href="<?php echo $path_web_root;?>/"><?php echo $site_title; ?></a>
 		  </li>
                 -->
-                <?php include($path_real_relative_root . '/_resources/navigation-menu.php'); ?>
+                <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
             </ul>
             <script>
 	      $('.navigation-menu').find('a').each(function(){
-		    if ($(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>")
+		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
 		      $(this).parent().addClass("active");
 	      });
 	    </script>
@@ -231,5 +279,5 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  
 <!-- BEGIN BODY CONTENT -->
 <?php
-}
+} // END if exclude html
 ?>

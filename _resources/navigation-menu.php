@@ -1,5 +1,5 @@
-<?php echo "
+<?php
 
-  <li><a href='$path_web_relative_root/Forum/'>Forum</a></li>
+  echo "<li><a href='$path_web_root/Forum/'>Forum</a></li>";
 
-";?>
+?>

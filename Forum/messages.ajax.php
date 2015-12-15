@@ -10,16 +10,16 @@ if ( ! (isset($_GET["thread_id"]) && is_numeric($_GET["thread_id"])) ) {
 
 /*
 // kick out users unless they are logged in
-session_start();
+sec_session_start();
 if (empty($_SESSION["user_id"])){
   echo "<p class='bg-danger text-danger'>ERROR: Not Logged In</p>";
   die();
 }
 */
 
-include_once('../_resources/credentials.php');
+include_once('_resources/credentials.php');
 $include_mysql = true;
-require_once('../_resources/header.php');
+require_once('_resources/header.php');
 
 ?>
 
@@ -44,5 +44,5 @@ if( !empty($mysql_connection) ){
 
 ?>
 
-<?php require_once('../_resources/footer.php');?>
+<?php require_once('_resources/footer.php');?>
 </div>
