@@ -12,7 +12,10 @@ CREATE PROCEDURE Forum_proc_Fetch_Messages(
 )
 BEGIN
 
-	SELECT * FROM Forum_Messages
+	SELECT m.*, u.username
+	FROM Forum_Messages m
+	JOIN Users u
+	  ON u.user_id = m.message_author_user_id
 	WHERE	message_thread_id = p_thread_id
 	  AND	message_deleted = 0;
 
