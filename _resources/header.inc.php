@@ -66,7 +66,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	  <!-- Side Nav Toggle -->
           <a id="sidenav-toggle" href="javascript:void(0);" onclick="$('#wrapper').toggleClass('toggled')">
-	    <img src="<?php echo $path_web_root;?>/_resources/images/favicon.ico"></img>
+	    <img src="<?php echo $path_web_root;?>/_resources/images/favicon.ico" style='padding:6px'></img>
           </a>
 
           <?php // #site_title_brand
