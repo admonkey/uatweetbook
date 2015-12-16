@@ -8,9 +8,9 @@ if ( !empty($_GET["message_id"]) && is_numeric($_GET["message_id"]) ){
   die();
 }
 
-include_once('_resources/credentials.php');
-$include_mysql = true;
-require_once('_resources/header.php');
+include_once('_resources/credentials.inc.php');
+$include_mysqlo = true;
+require_once('_resources/header.inc.php');
 
 sec_session_start();
 if (empty($_SESSION["user_id"])){
@@ -27,7 +27,7 @@ else $deleted = 1;
 
 <?php
 
-if( !empty($mysql_connection) ){
+if( !empty($mysqlo_connected) ){
 
     $sql="CALL Forum_proc_Delete_Message($user_id, $message_id, $deleted)";
     $result = mysql_query($sql) or die(mysql_error());
@@ -43,11 +43,11 @@ if( !empty($mysql_connection) ){
 
     // help connecting to database
     echo "<p class='bg-danger text-danger'>ERROR: Not Connected to Database</p>";
-    include("$path_real_relative_root/_resources/SQL/database.help.inc.html");
+    include("$path_real_root/_resources/SQL/database.help.inc.html");
 
 }
 
 ?>
 
-<?php require_once('_resources/footer.php');?>
+<?php require_once('_resources/footer.inc.php');?>
 </div>

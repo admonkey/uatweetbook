@@ -5,13 +5,14 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `email` VARCHAR(50) NOT NULL UNIQUE,
   `first_name` VARCHAR(50) NOT NULL,
   `last_name` VARCHAR(50) NOT NULL,
+  `private` BIT(1) DEFAULT 0,
   `password` CHAR(128) NOT NULL,
   `salt` CHAR(128) NOT NULL
 );
 -- ROOT USER PASSWORD IS P@55W0rd
-INSERT INTO `Users` (username,email,first_name,last_name,password,salt)
+INSERT INTO `Users` (username,email,first_name,last_name,private,password,salt)
   VALUES (
-    'root','root@example.com','root','user',
+    'root','root@example.com','root','user',1,
     'e491685a7e7ea32116eadd3911848b22b734fd3685796c719c1b14fca0c76a5efede54b7e48f569d8579e1a295145e8aaf8053e735e2c692dc80528fe02670be',
     'ec51c8c90854b1d9f18a0ac9daa75d611c3d01f7ac4a12059439d730322659d3528596b6c674d8ea3ae8d14b8b552cb0b46c32912ae82e470bc52d04bd229b88'
   );
@@ -32,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `User_Groups` (
   FOREIGN KEY (group_createdby_user_id) REFERENCES Users(user_id)
 );
 INSERT INTO `User_Groups` (group_name,group_createdby_user_id) VALUES ('ADMIN',1);
-INSERT INTO `User_Groups` (group_name,group_createdby_user_id) VALUES ('TEST',1);
 
 
 CREATE TABLE IF NOT EXISTS `User_Groups-link` (
@@ -44,4 +44,3 @@ CREATE TABLE IF NOT EXISTS `User_Groups-link` (
   PRIMARY KEY(user_id,group_id)
 );
 INSERT INTO `User_Groups-link` (user_id,group_id) VALUES (1,1);
-INSERT INTO `User_Groups-link` (user_id,group_id) VALUES (1,2);
