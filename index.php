@@ -19,6 +19,11 @@ echo "<h1>Welcome to $site_title</h1>";
    which includes the project <a href='https://github.com/admonkey/uatweetbook/wiki' target='_blank'>wiki</a>.</p>
 </div><!-- /.well -->
 
+<div class='well'>
+	<p>This webserver is hosted on a dedicated virtual machine provided for <strong class='text-success'>FREE</strong> by the UofA.</p>
+	<p>If you are a student, faculty, or staff that would like to have your own VM, then simply complete <a href='https://askit.uark.edu/request/vm/' target='_blank'>this form</a>.</p>
+</div><!-- /.well -->
+
 <div class='well' style='background-color:#dff0d8'>
 	<p>This website is fully encrypted over a TLS 1.2 (SSL) connection using AES GCM 128-bit block cipher with SHA 256-bit key size and using ECDHE_RSA as the key exchange mechanism.</p>
 	<p>The certificate is signed by <a href='https://letsencrypt.org/' target='_blank'>Let's Encrypt</a> Authority X1 for <strong class='text-success'>FREE</strong>, whose root certificate authority is cross signed by IdenTrust's DST Root CA X3 making it <u>trusted in all major browsers</u>.</p>
