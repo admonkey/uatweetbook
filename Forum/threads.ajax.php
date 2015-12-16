@@ -9,13 +9,13 @@ if (empty($_SESSION["user_id"])){
 }
 */
 
-include_once('_resources/credentials.php');
-$include_mysql = true;
-require_once('_resources/header.php');
+include_once('_resources/credentials.inc.php');
+$include_mysqlo = true;
+require_once('_resources/header.inc.php');
 
 
 // list of threads
-if( !empty($mysql_connection) ){
+if( !empty($mysqlo_connected) ){
     
     $sql="
 	SELECT t.thread_id, t.thread_name,
@@ -79,9 +79,9 @@ if( !empty($mysql_connection) ){
 
     // help connecting to database
     echo "<p class='bg-danger text-danger'>ERROR: Not Connected to Database</p>";
-    include("$path_real_relative_root/_resources/SQL/database.help.inc.html");
+    include("$path_real_root/_resources/SQL/database.help.inc.html");
 
 }
 ?>
 
-<?php require_once('_resources/footer.php');?>
+<?php require_once('_resources/footer.inc.php');?>
